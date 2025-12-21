@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro App</title>
+    <!-- Police d'écriture Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <!-- Lien CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="timer-message">
+        Veuillez sélectionner un minuteur avant de commencer.
+    </div>
+
+    <main class="container">
+        <div class="timer">
+            <h1>🍅 Pomodoro Timer</h1>
+            <div class="duration-type">
+                <button class="duration-type-item" id="pomodoro">Pomodoro</button>
+                <button class="duration-type-item" id="shortBreak">Petite pause</button>
+                <button class="duration-type-item" id="longBreak">Longue pause</button>
+            </div>
+            <div id="pomodoroTimer" class="display-time" data-duration="25.00">
+                25:00
+            </div>
+            <div id="shortBreakTimer" class="display-time" data-duration="5.00">
+                5:00
+            </div>
+            <div id="longBreakTimer" class="display-time" data-duration="10.00">
+                10:00
+            </div>
+            <div class="cta-buttons">
+                <button id="startCountdown">Commencer</button>
+                <button id="stopCountdown">Arrêter</button>
+            </div>
+        </div>
+    </main>
+
+
+
+
+
+    <!-- Lien JavaScript-->
+    <script src="js/app.js"></script>
+</body>
+</html>

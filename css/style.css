@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Reset de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- STYLES APPLIQUES AU POMODORO --- */
+body {
+    background-color:  #1e213f;
+    color: #d7e0ff;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.timer {
+    display: inline-block; /* centre le conteneur */
+    padding: 10px;
+    width: 600px;
+}
+
+.timer h1 {
+    font-size: 2em;
+    width: 8ch;
+    margin: 20px auto;
+}
+ 
+.duration-type,
+.cta-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.duration-type-item {
+    background-color: #2e325a;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.duration-type-item:hover {
+    background-color: #3e426a;
+}
+
+.display-time {
+    font-size: 5em;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#timer-message{
+    display: none !important; /* message caché par défaut, sera affiché en temps voulu via JavaScript */
+    text-align: center;
+    background-color: tomato;
+    color: white;
+    padding: 0.6rem;
+    margin: 1.25rem;
+    font-size: 1.125em;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+#startCountdown,
+#stopCountdown {
+    background-color: #2e325a;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#startCountdown:hover {
+    background-color:  #219a52;
+}
+
+#stopCountdown:hover {
+    background-color: tomato;
+}
