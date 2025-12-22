@@ -53,10 +53,10 @@ body {
     background-color: #3e426a;
 }
 
-.display-time {
+.timer-display {
     font-size: 5em;
     margin-top: 20px;
-    cursor: pointer;
+    font-weight: bold;
 }
 
 #timer-message{
