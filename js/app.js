@@ -6,8 +6,6 @@ let long = document.getElementById("longBreakTimer");
 let timers = document.querySelectorAll(".timer-display");
 
 let countdownInterval = null; // Stocke l'ID de l'intervalle choisi
-let durationInSeconds = 1500; // 25 minutes converties en secondes
-
 let currentTimer = null; // Contiendra la nouvelle valeur de la durée en fonction du clic de l'utilisateur
 
 const startButton = document.getElementById("startCountdown");
@@ -49,40 +47,51 @@ function hideAll() {
 }
 
 // Fonction pour gérer le lancement d'une session et mettre à jour la durée restante
-function startTimer () {
-    if (countdownInterval) {
+function startTimer (timerdisplay) {
+    if(countdownInterval) {
         clearInterval(countdownInterval);
     }
 
-    const endTimestamp = Date.now() + durationInSeconds * 1000;
-    const endDate = new Date(endTimestamp);
-    console.log(endDate.toLocaleDateString());
+    timerDuration = timerdisplay.getAttribute("data-duration").split(":")[0];
+    let durationInMiliseconds = timerDuration * 60 * 1000; // 25 minutes converties en millisecondes (1,5 Million de millisec.)
+    let endTimestamp = Date.now() + durationInMiliseconds;
 
     countdownInterval = setInterval(() => {
-        const timeRemaining = endTimestamp - Date.now();
-
+        const timeRemaining = new Date(endTimestamp - Date.now());
         if (timeRemaining <= 0) {
             clearInterval(countdownInterval);
-            timers.textContent = "00:00";
+            timerdisplay.textContent = "00:00";
             alert("Session terminée! Il est temps de prendre une pause.");
-            return;
+            const alarm = new Audio("https://www.freespecialeffects.co.uk/soundfx/scifi/electronic.wav");
+            alarm.play();
+        } else {
+            // padStart permet d'obtenir le format MM:SS (minutes: secondes)
+            const minutes = Math.floor(timeRemaining / 60000);
+            const seconds = Math.floor((timeRemaining % 60000) / 1000).toFixed(0);
+            const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            console.log(formattedTime);
+            timerdisplay.textContent = formattedTime;
         }
-        
-        const minutes = Math.floor(timeRemaining / 60000);
-        const seconds = Math.floor((timeRemaining % 60000) / 1000);
-        const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-        timers.textContent = formattedTime;
-    }, 1000)
+    }, 1000);
 }
 
+// Comme son nom l'indique, cette fonction sert à arreter le minuteur
 function pauseTimer() {
     clearInterval(countdownInterval);
     countdownInterval = null;
 }
 
-startButton.addEventListener("click", startTimer());
-stopButton.addEventListener("click", pauseTimer());
+startButton.addEventListener("click",() => {
+    if(currentTimer) {
+        startTimer(currentTimer);
+    }
+});
+
+stopButton.addEventListener("click", () => {
+    if(currentTimer) {
+        pauseTimer();
+    }
+});
 
 
 
