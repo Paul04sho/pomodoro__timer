@@ -4,8 +4,10 @@ let short = document.getElementById("shortBreakTimer");
 let long = document.getElementById("longBreakTimer");
 
 let timers = document.querySelectorAll(".timer-display");
-let countdownInterval = null;
-let timeLeftInSeconds = 1500; // 25 minutes converties en secondes
+
+let countdownInterval = null; // Stocke l'ID de l'intervalle choisi
+let durationInSeconds = 1500; // 25 minutes converties en secondes
+
 let currentTimer = null; // Contiendra la nouvelle valeur de la durée en fonction du clic de l'utilisateur
 
 const startButton = document.getElementById("startCountdown");
@@ -46,29 +48,41 @@ function hideAll() {
     timers.forEach(timer => timer.style.display = 'none');
 }
 
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    // padStart permet d'obtenir ici une chaine de 2 caractères commençant par 0 (pour les digits uniques)
-    // Exemple - 05: 00 au lieu de 5:0
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
-
-    console.log("Minutes:", formattedMinutes, "Secondes:", formattedSeconds);
-    return `${formattedMinutes}: ${formattedSeconds}`;
-}
-
-function updateTimerDisplay() {
-    timers.textContent = formatTime(timeLeftInSeconds);
-}
-
+// Fonction pour gérer le lancement d'une session et mettre à jour la durée restante
 function startTimer () {
-  // Bout de code qui gère le lancement du minuteur 
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+
+    const endTimestamp = Date.now() + durationInSeconds * 1000;
+    const endDate = new Date(endTimestamp);
+    console.log(endDate.toLocaleDateString());
+
+    countdownInterval = setInterval(() => {
+        const timeRemaining = endTimestamp - Date.now();
+
+        if (timeRemaining <= 0) {
+            clearInterval(countdownInterval);
+            timers.textContent = "00:00";
+            alert("Session terminée! Il est temps de prendre une pause.");
+            return;
+        }
+        
+        const minutes = Math.floor(timeRemaining / 60000);
+        const seconds = Math.floor((timeRemaining % 60000) / 1000);
+        const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+        timers.textContent = formattedTime;
+    }, 1000)
 }
 
-startButton.addEventListener("click", () => {
-    startTimer();
-})
+function pauseTimer() {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+}
+
+startButton.addEventListener("click", startTimer());
+stopButton.addEventListener("click", pauseTimer());
 
 
 
