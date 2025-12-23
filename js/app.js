@@ -4,8 +4,8 @@ let short = document.getElementById("shortBreakTimer");
 let long = document.getElementById("longBreakTimer");
 
 let timers = document.querySelectorAll(".timer-display");
-let countdownInterval = null;
-let timeLeftInSeconds = 1500; // 25 minutes converties en secondes
+
+let countdownInterval = null; // Stocke l'ID de l'intervalle choisi
 let currentTimer = null; // Contiendra la nouvelle valeur de la durée en fonction du clic de l'utilisateur
 
 const startButton = document.getElementById("startCountdown");
@@ -46,29 +46,52 @@ function hideAll() {
     timers.forEach(timer => timer.style.display = 'none');
 }
 
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    // padStart permet d'obtenir ici une chaine de 2 caractères commençant par 0 (pour les digits uniques)
-    // Exemple - 05: 00 au lieu de 5:0
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
+// Fonction pour gérer le lancement d'une session et mettre à jour la durée restante
+function startTimer (timerdisplay) {
+    if(countdownInterval) {
+        clearInterval(countdownInterval);
+    }
 
-    console.log("Minutes:", formattedMinutes, "Secondes:", formattedSeconds);
-    return `${formattedMinutes}: ${formattedSeconds}`;
+    timerDuration = timerdisplay.getAttribute("data-duration").split(":")[0];
+    let durationInMiliseconds = timerDuration * 60 * 1000; // 25 minutes converties en millisecondes (1,5 Million de millisec.)
+    let endTimestamp = Date.now() + durationInMiliseconds;
+
+    countdownInterval = setInterval(() => {
+        const timeRemaining = new Date(endTimestamp - Date.now());
+        if (timeRemaining <= 0) {
+            clearInterval(countdownInterval);
+            timerdisplay.textContent = "00:00";
+            alert("Session terminée! Il est temps de prendre une pause.");
+            const alarm = new Audio("https://www.freespecialeffects.co.uk/soundfx/scifi/electronic.wav");
+            alarm.play();
+        } else {
+            // padStart permet d'obtenir le format MM:SS (minutes: secondes)
+            const minutes = Math.floor(timeRemaining / 60000);
+            const seconds = Math.floor((timeRemaining % 60000) / 1000).toFixed(0);
+            const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            console.log(formattedTime);
+            timerdisplay.textContent = formattedTime;
+        }
+    }, 1000);
 }
 
-function updateTimerDisplay() {
-    timers.textContent = formatTime(timeLeftInSeconds);
+// Comme son nom l'indique, cette fonction sert à arreter le minuteur
+function pauseTimer() {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
 }
 
-function startTimer () {
-  // Bout de code qui gère le lancement du minuteur 
-}
+startButton.addEventListener("click",() => {
+    if(currentTimer) {
+        startTimer(currentTimer);
+    }
+});
 
-startButton.addEventListener("click", () => {
-    startTimer();
-})
+stopButton.addEventListener("click", () => {
+    if(currentTimer) {
+        pauseTimer();
+    }
+});
 
 
 
