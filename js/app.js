@@ -61,7 +61,7 @@ function startTimer (timerdisplay) {
         if (timeRemaining <= 0) {
             clearInterval(countdownInterval);
             timerdisplay.textContent = "00:00";
-            alert("Session terminée! Il est temps de prendre une pause.");
+            alert("Session terminée!");
             const alarm = new Audio("https://www.freespecialeffects.co.uk/soundfx/scifi/electronic.wav");
             alarm.play();
         } else {
